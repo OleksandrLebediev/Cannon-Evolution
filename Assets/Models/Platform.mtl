@@ -1,0 +1,13 @@
+newmtl Scaner_1
+Kd 0.6792453 0.6792453 0.6792453
+d 1
+
+newmtl Panel
+map_Kd D:/Unity/Projects/Test/Assets/Materials/Panel0.png
+Kd 1 1 1
+d 1
+
+newmtl Scaner
+Kd 1 1 1
+d 1
+
