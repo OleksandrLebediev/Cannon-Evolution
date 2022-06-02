@@ -3,12 +3,12 @@ using UnityEngine.Events;
 
 public class IncreaserZone : MonoBehaviour
 {
-    public event UnityAction<Cannon> CannonPassedIncreaserZone;
+    public event UnityAction<IIncreases> CannonPassedIncreaserZone;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Cannon>(out Cannon cannon))
+        if (other.TryGetComponent<IIncreases>(out IIncreases increases))
         {
-            CannonPassedIncreaserZone?.Invoke(cannon);
+            CannonPassedIncreaserZone?.Invoke(increases);
         }
     }
 }

@@ -8,31 +8,31 @@ public class Ball : MonoBehaviour
     private float _speed;
     private Rigidbody _rigidbody;
     private bool _isMoving;
-    private float _radius = 2;
-    private float _force = 1000;
+    private float _radius;
+    private float _force;
     
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    public void Initialize(Transform shotPoint, float speed)
+    public void Initialize(float speedBall, float radius, float force)
     {
-        _speed = speed;
+        _speed = speedBall;
+        _radius = radius;
+        _force = force;
         _isMoving = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Explode();
     }
 
     private void FixedUpdate()
     {
         if (_isMoving == false) return;
-        transform.Translate(0, 0, _speed * Time.deltaTime);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        _isMoving = false;
-        _rigidbody.useGravity = true;
-        Explode();
+        _rigidbody.velocity = transform.forward * _speed;
     }
 
     private void Explode()
@@ -40,16 +40,17 @@ public class Ball : MonoBehaviour
         Collider[] overlapCollider = Physics.OverlapSphere(transform.position, _radius);
         for (int i = 0; i < overlapCollider.Length; i++)
         {
-            if(overlapCollider[i].TryGetComponent<Enemy>(out Enemy enemy))
+            if (overlapCollider[i].TryGetComponent<IPhysicalTarget>(out IPhysicalTarget target))
             {
-                enemy.TakeDamage();
-                enemy.Explode(_force, transform.position, _radius);
+                target.OnCollision(_force, transform.position, _radius);
+                _isMoving = false;
             }
-           // Rigidbody rigidbody = overlapCollider[i].attachedRigidbody;
-           // if (rigidbody)
-           // {
-           //     rigidbody.AddExplosionForce(_force, transform.position, _radius);
-           // }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, _radius);
     }
 }

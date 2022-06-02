@@ -1,38 +1,51 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Player : MonoBehaviour
+
+[RequireComponent(typeof(PlayerWallet))]
+[RequireComponent(typeof(PlayerMovement))]
+public class Player : MonoBehaviour, IPlayerEvents
 {
-    [SerializeField] private CannonProvider _cannonProvider;
-    private EvolutionHandler _evolutionHandler;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _speedHorizontal;
+    [SerializeField] private List<Cannon> _cannons;
+
+    public PlayerWallet Wallet { get; private set; }
+    public PlayerMovement Movement { get; private set; }
+
+    private CannonHandler _cannonHandler;
+    private Vector3 _startPosition = new Vector3(0, 0, 0);
+
+    public event UnityAction AllCannonsLost;
 
     private void Awake()
     {
-        _evolutionHandler = new EvolutionHandler();
-    }
+        Wallet = GetComponent<PlayerWallet>();
+        Movement = GetComponent<PlayerMovement>();    }
 
-    private void Start()
+    public void Initialize(TouchHandler joystickControl,
+        CannonHandler cannonHandler)
     {
-        _cannonProvider.Initialize();
-        _cannonProvider.YearChanged += OnTryEvolution;
+        Movement.Initialize(joystickControl, cannonHandler);
+        _cannonHandler = cannonHandler;
+
+        cannonHandler.AllCannonsDestroy += OnAllCannonsDestroy;
+
     }
 
-    private void OnTryEvolution(int year)
+    public void ResetPlayer()
     {
-        int levelEvolution = _evolutionHandler.TryEvolution(year);
-        _cannonProvider.CannonsEvolution(levelEvolution);
+        transform.position = _startPosition;
     }
 
-    private void Update()
+    private void OnAllCannonsDestroy()
     {
-        float point = _cannonProvider.CheckCannonInside();
-        float input = Input.GetAxis("Horizontal") * _speedHorizontal * Time.deltaTime;
-
-        if (input > 0 && point > 0 || input < 0 && point < 0) return;
-        transform.Translate(input, 0, _speed * Time.deltaTime);
+        Movement.StopMoving();
+        AllCannonsLost?.Invoke();
     }
-} 
+
+
+    private void OnDestroy()
+    {
+        _cannonHandler.AllCannonsDestroy -= OnAllCannonsDestroy;
+    }
+}

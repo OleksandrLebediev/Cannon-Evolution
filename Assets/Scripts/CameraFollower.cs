@@ -9,14 +9,9 @@ public class CameraFollower : MonoBehaviour
     [SerializeField] private Vector3 _offset;
     private Player _target;
 
-    private void Start()
-    {
-        _target = GameObject.FindObjectOfType<Player>();
-    }
-
     public void Initialize(Player target)
     {
-        
+        _target = target;
     }
 
     private void LateUpdate()

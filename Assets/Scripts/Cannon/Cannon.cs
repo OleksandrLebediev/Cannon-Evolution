@@ -1,22 +1,34 @@
-using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Cannon : MonoBehaviour
+public class Cannon : MonoBehaviour, IIncreases
 {
-    [SerializeField] private Transform _shotPoint;
-    [SerializeField] private Ball _ballTemplate;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _rechargeTime;
+    [SerializeField] private List<CannonStageEvolution> _stagesEvolution;
 
-    public float RechargeTime => _rechargeTime;
-    public event UnityAction<IncreaserData> PassedIncreaserYearsZone;
-    public event UnityAction<IncreaserData> PassedIncreaserNumberZone;
-    
+    private CannonStageEvolution _currentStageEvolution;
+    private AudioSource _audioSource;
+    private int _indexEvolution = 0;
+
+    private CannonParameters Parameters => _currentStageEvolution.Parameters;
+    private ParticleSystem ParticleSystem => _currentStageEvolution.ParticleSystem;
+    public float RechargeTime => Parameters.RechargeTime;
+
+    public event UnityAction<IncreaserData> PassedIncreaserZone;
+    public event UnityAction Destroyed;
+
+    public void Initialize(AudioSource audioSource)
+    {
+        _currentStageEvolution = _stagesEvolution[_indexEvolution];
+        _audioSource = audioSource; 
+    }
+
     public void Show()
     {
+        _stagesEvolution[_indexEvolution].Hide();
         gameObject.SetActive(true);
+        _stagesEvolution[_indexEvolution].Show();
     }
 
     public void Hide()
@@ -24,25 +36,33 @@ public class Cannon : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void OnPassedIncreaserYearsZone(IncreaserData increaserData)
-    {
-        PassedIncreaserYearsZone?.Invoke(increaserData);
-    }
-    
-    public void OnPassedIncreaserNumberZone(IncreaserData increaserData)
-    {
-        PassedIncreaserNumberZone?.Invoke(increaserData);
-    }
-
-    public void TakeDamage()
-    {
-        Hide();
-    }
-
     public void Shoot()
     {
-        Ball ball = Instantiate(_ballTemplate, _shotPoint.position, Quaternion.identity);
-        ball.Initialize(_shotPoint, _speed);
-        Destroy(ball.gameObject, _rechargeTime);
+        Ball ball = Instantiate(Parameters.BallTemplate, Parameters.ShotPoint.position, Quaternion.identity);
+        ball.Initialize(Parameters.SpeedBall, Parameters.Radius, Parameters.Force);
+        _audioSource.pitch = Random.Range(0.8f, 1f);
+        _audioSource.Play();
+        ParticleSystem.Play();
+        Destroy(ball.gameObject, Parameters.Range);
     }
+
+    public void ApplyHit()
+    {
+        Destroyed?.Invoke();
+    }
+
+    public void ChangeLevelEvolution(int stageEvolution)
+    {
+        _stagesEvolution[_indexEvolution].Hide();
+        _stagesEvolution[stageEvolution].Show();
+        _indexEvolution = stageEvolution;
+        _currentStageEvolution = _stagesEvolution[stageEvolution];
+    }
+
+    public void OnPassedIncreaserZone(IncreaserData increaserData)
+    {
+        PassedIncreaserZone?.Invoke(increaserData);
+        Vibration.VibratePeek();
+    }
+
 }

@@ -165,8 +165,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: +20
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 43552defb5da5fd4dafb49f03af638a3, type: 2}
-  m_sharedMaterial: {fileID: -2892783480186824814, guid: 43552defb5da5fd4dafb49f03af638a3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c8d50c051d01254a8ca0a6493647061, type: 2}
+  m_sharedMaterial: {fileID: -2892783480186824814, guid: 7c8d50c051d01254a8ca0a6493647061, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -299,8 +299,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Year
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 43552defb5da5fd4dafb49f03af638a3, type: 2}
-  m_sharedMaterial: {fileID: -2892783480186824814, guid: 43552defb5da5fd4dafb49f03af638a3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c8d50c051d01254a8ca0a6493647061, type: 2}
+  m_sharedMaterial: {fileID: -2892783480186824814, guid: 7c8d50c051d01254a8ca0a6493647061, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -411,10 +411,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbd3e65c9d6828449a4d62a13e5e25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _increaserType: 0
+  _increaserMoveType: 0
   _increaserData:
+    _increaserType: 0
     _numberMagnification: 500
     _arithmeticOperator: 0
+  _speed: 0
+  _increaserDouble: {fileID: 0}
+  _meshRenderer: {fileID: 2361357013904920378}
+  _blueMaterial: {fileID: 2100000, guid: 5dbee29f8f77ead4d9a1250d85525e86, type: 2}
+  _redMaterial: {fileID: 2100000, guid: 09803f95609e2c94a85a6fb323af3745, type: 2}
 --- !u!1 &2361357013409973745
 GameObject:
   m_ObjectHideFlags: 0
