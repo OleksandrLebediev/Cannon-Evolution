@@ -26,21 +26,21 @@ MonoBehaviour:
   UserMessagesFailed: 0
   CustomArea: 
   gameKey:
-  - 63910037a21f68284baec7a7357e69c3
+  - 1fdaf46292a7182d71426c3d1c3bf4bd
   secretKey:
-  - 880fdf6280fed313067cfef7c8466ed47405e5ad
+  - 9b53ada88395b41cec728e6ba3fbd44c251a6969
   Build:
   - 0.1
   SelectedPlatformOrganization:
-  - 
+  - Voodoo
   SelectedPlatformStudio:
-  - 
+  - Voodoo
   SelectedPlatformGame:
-  - 
-  SelectedPlatformGameID: ffffffff
+  - CannonEvolution - android (DraftGames)
+  SelectedPlatformGameID: 741d0300
   SelectedOrganization: 02000000
   SelectedStudio: 01000000
-  SelectedGame: 00000000
+  SelectedGame: 02000000
   NewVersion: 
   Changes: 
   SignUpOpen: 1

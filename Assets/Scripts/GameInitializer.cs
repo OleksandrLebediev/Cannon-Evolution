@@ -53,21 +53,19 @@ public class GameInitializer : MonoBehaviour
         _player.ResetPlayer();
         _cannonHandler.ResetCannons();
 
-        // TinySauce.OnGameStarted("level_" + level);
-        // SaveData data = new SaveData(level, _playerProvider.Player.Wallet.AmountMoney);
-        // _saveSystem.Save(data);
+        TinySauce.OnGameStarted("level_" + level);
+        SaveData data = new SaveData(level, _player.Wallet.AmountMoney);
+        _saveSystem.Save(data);
     }
 
     private void OnLevelRestarted(int level)
     {
-        //  TinySauce.OnGameFinished(false, _playerProvider.Player.Wallet.AmountMoneyPerLevel,
-        //     "level_" + level);
+        TinySauce.OnGameFinished(false, _player.Wallet.AmountMoneyPerLevel, "level_" + level);
     }
 
     private void OnLevelChanges(int level)
     {
-        // TinySauce.OnGameFinished(true, _playerProvider.Player.Wallet.AmountMoneyPerLevel,
-        //    "level_" + level);
+        TinySauce.OnGameFinished(true, _player.Wallet.AmountMoneyPerLevel, "level_" + level);
     }
 
     private void OnDestroy()
